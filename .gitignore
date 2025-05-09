@@ -3,3 +3,4 @@ venv/
 
 docs
 models
+__pycache__
