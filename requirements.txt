@@ -1,0 +1,14 @@
+langchain
+langchain-community
+langchain-huggingface
+langchain-together
+transformers
+torch
+sentence-transformers
+faiss-cpu
+streamlit
+python-dotenv
+pypdf
+llama-cpp-python
+pdfplumber
+qdrant-client

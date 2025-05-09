@@ -1,0 +1,14 @@
+faiss-cpu==1.11.0
+langchain==0.3.25
+langchain-community==0.3.23
+langchain-core==0.3.59
+langchain-huggingface==0.2.0
+langchain-openai==0.3.16
+langchain-text-splitters==0.3.8
+langchain-together==0.3.0
+pypdf==5.4.0
+python-dotenv==1.1.0
+sentence-transformers==4.1.0
+streamlit==1.45.0
+torch==2.7.0
+transformers==4.51.3
