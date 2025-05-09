@@ -12,3 +12,4 @@ pypdf
 llama-cpp-python
 pdfplumber
 qdrant-client
+langchain-qdrant

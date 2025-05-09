@@ -14,6 +14,8 @@ from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams
 from qdrant_client.http.models import Distance, VectorParams
 from sentence_transformers import CrossEncoder
+from langchain_qdrant import QdrantVectorStore
+from qdrant_client.http.models import Distance, VectorParams
 
 import uuid
 
@@ -23,7 +25,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import InMemoryVectorStore
 from langchain.chains import RetrievalQA
 from langchain.chains import ConversationalRetrievalChain
-from langchain.vectorstores import FAISS
+from langchain_community.vectorstores import FAISS
 import pdfplumber
 from langchain.docstore.document import Document
 
@@ -162,6 +164,8 @@ def process_multiple_pdfs(files) -> List[Document]:
 
     return all_docs
 
+    
+
 
 def create_qa_chain(documents, embedding_model):
     text_splitter = get_text_splitter()
@@ -173,6 +177,22 @@ def create_qa_chain(documents, embedding_model):
 
     if not splits:
         return None
+
+    # client = QdrantClient(":memory:")
+
+    # client.create_collection(
+    #     collection_name="demo_collection",
+    #     vectors_config=VectorParams(size=384, distance=Distance.COSINE),
+    # )
+
+    # vectorstore = QdrantVectorStore(
+    #     client=client,
+    #     collection_name="demo_collection",
+    #     embedding=embedding_model,
+    # )
+
+    # vectorstore.add_documents(splits)
+
         
     vectorstore = FAISS.from_documents(
         documents=splits,
@@ -206,9 +226,9 @@ def rerank_results(query):
     ranked_docs = [doc for _, doc in sorted(zip(scores, docs), key=lambda x: x[0], reverse=True)]
     top_docs = ranked_docs[:3]
     context = "\n\n".join([doc.page_content for doc in top_docs])
-    prompt = f"""You are a helpful assistant.\n\nChat History:\n{format_chat_history(st.session_state.chat_history)}\n\nContext:\n{context}\n\nQuestion:\n{query}"""
+    prompt = f"""You are a helpful assistant that answers questions based on the provided document excerpts.\n\nContext:\n{context}\n\nQuestion:\n{query} \n\nAnswer in a clear and concise manner using the most relevant context."""
     print("Prompt: ", prompt)
-    return st.session_state.qa_chain.invoke(prompt)
+    return st.session_state.qa_chain.invoke({"question": prompt})
 
 
 
@@ -254,8 +274,8 @@ def main():
                 question = st.chat_input("Ask a question about your document...")
                 if question:
                     with st.spinner("💡 Thinking..."):
-                        result = st.session_state.qa_chain.invoke({"question": question})
-                        # result = rerank_results(question)
+                        # result = st.session_state.qa_chain.invoke({"question": question})
+                        result = rerank_results(question)
                         answer_text = result["answer"]
 
                         sources = result.get("source_documents", [])
