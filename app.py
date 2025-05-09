@@ -12,6 +12,7 @@ from langchain.chains import ConversationalRetrievalChain
 from langchain_community.vectorstores import FAISS
 from langchain.memory import ConversationBufferMemory
 # from langchain_community.llms import LlamaCpp
+from langchain_together import ChatTogether
 from sentence_transformers import CrossEncoder
 
 from components.pdf_handler import process_multiple_pdfs
