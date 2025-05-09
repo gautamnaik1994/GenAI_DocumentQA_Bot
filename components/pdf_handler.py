@@ -7,12 +7,12 @@ import os
 import re
 
 
-
 def clean_text(text: str) -> str:
     text = re.sub(r'\n{2,}', '\n', text)
     text = re.sub(r'\s{2,}', ' ', text)
     text = re.sub(r'page \d+', '', text, flags=re.IGNORECASE)
     return text.strip()
+
 
 def process_multiple_pdfs(files) -> List[Document]:
     all_docs = []
@@ -29,7 +29,6 @@ def process_multiple_pdfs(files) -> List[Document]:
                         if not raw_text:
                             continue
 
-            
                         lines = raw_text.split('\n')
                         filtered_lines = [
                             line for line in lines
@@ -49,7 +48,8 @@ def process_multiple_pdfs(files) -> List[Document]:
 
                         tables = page.extract_tables()
                         for table in tables:
-                            table_str = '\n'.join([' | '.join(row) for row in table if any(row)])
+                            table_str = '\n'.join(
+                                [' | '.join(row) for row in table if any(row)])
                             table_doc = Document(
                                 page_content=f"Table from page {i + 1}:\n{table_str}",
                                 metadata={
