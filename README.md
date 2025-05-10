@@ -6,6 +6,10 @@ Check out the Streamlit App here [https://gen-ai-document-rag.streamlit.app/](ht
 
 Streamlit shuts down the app after some time of inactivity. Please click on "Wake Up App" button to start the app again.
 
+## Demo Video
+
+[![video](http://img.youtube.com/vi/PlT3XBmnUKY/0.jpg)](http://www.youtube.com/watch?v=PlT3XBmnUKY "Demo Video")
+
 ## 🚀 Features
 
 - **Multi-document Upload**: Upload up to 5 PDF documents simultaneously.
