@@ -66,7 +66,24 @@ git clone <your-repo-url>
 cd DocumentQA
 ```
 
-### 2. Set Up Environment
+### 2. Configure Environment Variables
+
+Create a `.env` file in the project root and add your API keys.  
+Get your API key from [https://api.together.ai/](https://api.together.ai/) and add it to the `.env` file:
+
+```bash
+TOGETHER_AI_API_KEY=<your-api-key>
+```
+
+### 3. If Docker is Installed
+
+```bash
+docker compose up
+```
+
+### 4. If Docker is Not Installed
+
+#### Set Up Environment
 
 Create a virtual environment and install dependencies:
 
@@ -76,15 +93,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Configure Environment Variables
-
-Create a `.env` file in the project root and add your API keys:
-
-```bash
-TOGETHER_AI_API_KEY=<your-api-key>
-```
-
-### 4. Run the Application
+#### Run the Application
 
 ```bash
 streamlit run app.py
