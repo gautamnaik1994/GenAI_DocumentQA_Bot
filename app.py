@@ -114,7 +114,6 @@ def re_rank_results(query, cross_encoder):
 
 
 def main():
-
     st.set_page_config(page_title="AI-Powered Document Q&A",
                        page_icon="🔍", layout="wide")
     st.markdown(
@@ -151,15 +150,25 @@ def main():
             st.warning("Please upload a maximum of 5 files at a time.")
             uploaded_files = uploaded_files[:5]
 
+        if uploaded_files and "uploaded_files" not in st.session_state:
+            st.session_state.uploaded_files = uploaded_files
+            st.session_state.processed_documents = None
+
     if uploaded_files:
         try:
-            with st.spinner('Processing documents...'):
-                documents = process_multiple_pdfs(uploaded_files)
+            if st.session_state.processed_documents is None:
+                with st.spinner('Processing documents...'):
+                    documents = process_multiple_pdfs(uploaded_files)
 
-                if not documents:
-                    st.warning("No text found in the uploaded files.")
-                    return
+                    if not documents:
+                        st.warning("No text found in the uploaded files.")
+                        return
 
+                    st.session_state.processed_documents = documents
+
+            documents = st.session_state.processed_documents
+
+            if "qa_chain" not in st.session_state or st.session_state.qa_chain is None:
                 st.session_state.qa_chain = create_qa_chain(
                     documents, embedding_model)
 
